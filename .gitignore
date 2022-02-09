@@ -1,0 +1,17 @@
+*.jpg
+*.svg
+*.png
+*.ico
+*.ini
+venv/
+.idea/
+*.txt
+*.pak
+*.zip
+*.bin
+*.pdf
+__pycache__/
+*test*
+.idea
+db.sqlite3
+!requirements.txt
