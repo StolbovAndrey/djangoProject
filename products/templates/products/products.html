@@ -55,7 +55,7 @@
                         <div class="card h-100">
                             <a href="#">
                                 <img class="card-img-top"
-                                     src="{% static product.filepath %}"
+                                     src="/media/{{product.image }}"
                                      alt="">
                             </a>
                             <div class="card-body">
@@ -63,11 +63,14 @@
                                     <a href="#">{{ product.name }}</a>
                                 </h4>
                                 <h5>{{ product.price }}</h5>
+                                <p class="card-text">{{ product.category.name }}</p>
                                 <p class="card-text">{{ product.description }}</p>
                             </div>
+                            {% if product.quantity > 0 %}
                             <div class="card-footer text-center">
                                 <button type="button" class="btn btn-outline-success">Отправить в корзину</button>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
