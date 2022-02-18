@@ -4,6 +4,7 @@
 *.ico
 *.ini
 venv/
+media
 .idea/
 *.txt
 *.pak

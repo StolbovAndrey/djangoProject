@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.conf import settings
+from .models import ProductCategory, Products
 import json
 
 
@@ -9,7 +11,7 @@ def index(request):
 
 def products(request):
 
-    with open('E:/projects/geekshop-server/geekshop/static/vendor/img/products/fixtures/data.json', encoding='utf-8') as file:
-        context = json.load(file)
+    allProducts = Products.objects.all()
+    context = {'title': 'Каталог товаров', 'products': allProducts}
 
     return render(request, 'products/products.html', context)
