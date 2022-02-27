@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.conf import settings
-from .models import ProductCategory, Products
+from products.models import ProductCategory, Products
 import json
 
 
@@ -11,7 +11,8 @@ def index(request):
 
 def products(request):
 
-    allProducts = Products.objects.all()
-    context = {'title': 'Каталог товаров', 'products': allProducts}
+    categories = ProductCategory.objects.all()
+    all_products = Products.objects.all()
+    context = {'title': 'Каталог товаров', 'products': all_products, 'categories': categories}
 
     return render(request, 'products/products.html', context)
