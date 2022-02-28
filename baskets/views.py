@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
 
 from products.models import Products
@@ -19,11 +20,14 @@ def basket_add(request, product_id):
 
 def basket_remove(request, id):
     basket = Basket.objects.get(id=id)
+    basketname = basket.product.name
     basket.delete()
+    messages.success(request, f'Товар {basketname} удален из корзины')
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 def basket_clean(request):
     basket = Basket.objects.filter(user=request.user)
     basket.delete()
+    messages.success(request, 'Корзина очищена')
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
