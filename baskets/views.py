@@ -66,19 +66,15 @@ def basket_add(request, id):
         baskets = Basket.objects.filter(user=request.user, product=product)
         if not baskets:
             Basket.objects.create(user=request.user, product=product, quantity=1)
-            baskets = Basket.objects.filter(user=request.user)
-            context = {'baskets': baskets}
-            result = render_to_string('products/products.html', context)
-            return JsonResponse({'result': result})
         else:
             basket = baskets.first()
             if basket.quantity >= product.quantity:
-                pass
+                messages.warning(request, 'на складе отсутствует данное количество товара')
             else:
                 basket.quantity += 1
                 basket.save()
-                baskets = Basket.objects.filter(user=request.user)
-                context = {'baskets': baskets}
-                result = render_to_string('products/products.html', context)
-                return JsonResponse({'result': result})
+        baskets = Basket.objects.filter(user=request.user)
+        context = {'baskets': baskets}
+        result = render_to_string('products/products.html', context)
+        return JsonResponse({'result': result})
 
