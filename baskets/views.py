@@ -82,6 +82,6 @@ def basket_add(request, id):
             'categories': categories,
             'baskets': baskets
         }
-        result = render_to_string('products/products.html', context)
+        result = render_to_string('products/products.html', context, request.user)
         return JsonResponse({'result': result})
 
