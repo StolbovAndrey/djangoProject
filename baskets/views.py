@@ -66,6 +66,7 @@ def basket_add(request, id):
     if request.is_ajax():
         product = Products.objects.get(id=id)
         baskets = Basket.objects.filter(user=request.user, product=product)
+        messages.success(request, f'Товар {product.name} добавлен в корзину')
         if not baskets:
             Basket.objects.create(user=request.user, product=product, quantity=1)
         else:
@@ -75,6 +76,7 @@ def basket_add(request, id):
             else:
                 basket.quantity += 1
                 basket.save()
+                messages.success(request, f'Товар {product.name} добавлен в корзину')
         baskets = Basket.objects.filter(user=request.user)
         context = {
             'title': 'Каталог товаров',
