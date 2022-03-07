@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
-from products.models import Products
+from products.models import Products, ProductCategory
 from baskets.models import Basket
 
 
@@ -61,6 +61,8 @@ def basket_edit(request, id, quantity):
 
 @login_required
 def basket_add(request, id):
+    categories = ProductCategory.objects.all()
+    all_products = Products.objects.all()
     if request.is_ajax():
         product = Products.objects.get(id=id)
         baskets = Basket.objects.filter(user=request.user, product=product)
@@ -74,7 +76,12 @@ def basket_add(request, id):
                 basket.quantity += 1
                 basket.save()
         baskets = Basket.objects.filter(user=request.user)
-        context = {'baskets': baskets}
+        context = {
+            'title': 'Каталог товаров',
+            'products': all_products,
+            'categories': categories,
+            'baskets': baskets
+        }
         result = render_to_string('products/products.html', context)
         return JsonResponse({'result': result})
 

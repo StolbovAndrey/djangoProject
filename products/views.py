@@ -1,7 +1,6 @@
 from django.shortcuts import render
-from django.conf import settings
+
 from products.models import ProductCategory, Products
-import json
 
 
 def index(request):
