@@ -79,11 +79,10 @@
                                     </div>
                                     {% if product.quantity > 0 %}
                                     <div class="card-footer text-center">
-                                        <label>
-                                            <input name="{{ product.id }}" type="add" class="btn btn-outline-success"
-                                                value="Отправить в корзину">
-                                        </label>
-                                    </div>
+                                    <a href="{% url 'baskets:basket_add' product.id %}" class="btn btn-outline-success">
+                                        Отправить в корзину
+                                    </a>
+                                </div>
                                     {% endif %}
                                 </div>
                             </div>
@@ -115,10 +114,6 @@
                 <p class="m-0 text-center text-white">Copyright &copy; GeekShop 2022</p>
             </div>
         </footer>
-    {% endblock %}
-
-    {% block js %}
-        <script src="{% static 'js/products.js' %}"></script>
     {% endblock %}
 </div>
 
