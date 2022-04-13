@@ -8,23 +8,23 @@ from products.models import Products, ProductCategory
 from baskets.models import Basket
 
 
-# @login_required
-# def basket_add(request, product_id):
-#     product = Products.objects.get(id=product_id)
-#     baskets = Basket.objects.filter(user=request.user, product=product)
-#     if not baskets:
-#         Basket.objects.create(user=request.user, product=product, quantity=1)
-#         messages.success(request, f'Товар {product.name} добавлен в корзину')
-#         return HttpResponseRedirect(request.META['HTTP_REFERER'])
-#     else:
-#         basket = baskets.first()
-#         if basket.quantity >= product.quantity:
-#             messages.warning(request, 'на складе отсутствует данное количество товара')
-#         else:
-#             basket.quantity += 1
-#             basket.save()
-#             messages.success(request, f'Товар {product.name} добавлен в корзину')
-#         return HttpResponseRedirect(request.META['HTTP_REFERER'])
+@login_required
+def basket_add(request, product_id):
+    product = Products.objects.get(id=product_id)
+    baskets = Basket.objects.filter(user=request.user, product=product)
+    if not baskets:
+        Basket.objects.create(user=request.user, product=product, quantity=1)
+        messages.success(request, f'Товар {product.name} добавлен в корзину')
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    else:
+        basket = baskets.first()
+        if basket.quantity >= product.quantity:
+            messages.warning(request, 'на складе отсутствует данное количество товара')
+        else:
+            basket.quantity += 1
+            basket.save()
+            messages.success(request, f'Товар {product.name} добавлен в корзину')
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @login_required
@@ -57,33 +57,3 @@ def basket_edit(request, id, quantity):
         context = {'baskets': baskets}
         result = render_to_string('baskets/basket.html', context)
         return JsonResponse({'result': result})
-
-
-@login_required
-def basket_add(request, id):
-    categories = ProductCategory.objects.all()
-    all_products = Products.objects.all()
-    if request.is_ajax():
-        product = Products.objects.get(id=id)
-        baskets = Basket.objects.filter(user=request.user, product=product)
-        messages.success(request, f'Товар {product.name} добавлен в корзину')
-        if not baskets:
-            Basket.objects.create(user=request.user, product=product, quantity=1)
-        else:
-            basket = baskets.first()
-            if basket.quantity >= product.quantity:
-                messages.warning(request, 'на складе отсутствует данное количество товара')
-            else:
-                basket.quantity += 1
-                basket.save()
-                messages.success(request, f'Товар {product.name} добавлен в корзину')
-        baskets = Basket.objects.filter(user=request.user)
-        context = {
-            'title': 'Каталог товаров',
-            'products': all_products,
-            'categories': categories,
-            'baskets': baskets
-        }
-        result = render_to_string('products/products.html', context, request.user)
-        return JsonResponse({'result': result})
-
